@@ -1,0 +1,171 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<div class="text-center top-space">
+    <div class="row pb-5">
+        <h1 class="mx-auto">{{project}}</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card shadow p-3">
+                    <form method="post" action="{{url}}">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            {{form.name}}
+                            <label for="{{form.name.id_for_label}}">{{form.name.label}}</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{form.priority}}
+                            <label for="{{form.priority.id_for_label}}">{{form.priority.label}}</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{form.status}}
+                            <label for="{{form.status.id_for_label}}">{{form.status.label}}</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{form.created}}
+                            <label for="{{form.created.id_for_label}}">{{form.created.label}}</label>
+                        </div>
+                        <div class="position-relative container col-3 pt-3">
+                            <button type="submit" class=" mx-auto btn btn-success">Add Task</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow p-3" style="height: 384px; overflow-y: scroll">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Task</th>
+                            <th scope="col">Priority</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Handler</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for task in tasks %}
+                        <tr>
+                            <th scope="row">{{task.name}}</th>
+                            {% if task.priority == 1 %}
+                            <td class="align-middle">
+                                <span class="badge bg-danger">High priority</span>
+                            </td>
+                            {% elif task.priority == 2 %}
+                            <td class="align-middle">
+                                <span class="badge bg-warning">Middle priority</span>
+                            </td>
+                            {% elif task.priority == 3 %}
+                            <td class="align-middle">
+                                <span class="badge bg-success">Low priority</span>
+                            </td>
+                            {% endif %}
+                            {% if task.status == 1 %}
+                            <td class="align-middle">
+                                <span class="badge bg-success">Completed</span>
+                            </td>
+                            {% elif task.status == 2 %}
+                            <td class="align-middle">
+                                <span class="badge bg-info">Working</span>
+                            </td>
+                            {% elif task.status == 3 %}
+                            <td class="align-middle">
+                                <span class="badge bg-danger">Pending</span>
+                            </td>
+                            {% endif %}
+                            <td class="align-middle">
+                                <a href="{% url 'baseapp:edit_task' pk=task.pk %}"
+                                   data-mdb-toggle="tooltip" title="Edit">
+                                    <i class="fas fa-pen text-warning me-3"></i></a>
+                                <a href="{% url 'baseapp:change_status' pk=task.pk %}"
+                                   data-mdb-toggle="tooltip" title="Done">
+                                    <i class="fas fa-check text-success me-3"></i></a>
+                                <a href="{% url 'baseapp:task_delete' pk=task.pk %}"
+                                   data-mdb-toggle="tooltip" title="Remove">
+                                    <i class="fas fa-trash-alt text-danger"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="post" action="{{ url }}">
+    {% csrf_token %}
+    <div class="form-floating mb-3">
+        <input type="text" name="title" class="form-control" id="title">
+        <label for="title">Book Title</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="text" name="author" class="form-control" id="author">
+        <label for="author">Author</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="date" name="published" class="form-control" id="published">
+        <label for="published">Published Date</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="number" name="price" class="form-control" id="price">
+        <label for="price">Price</label>
+    </div>
+    <div class="position-relative container col-3 pt-3">
+        <button type="submit" class="mx-auto btn btn-success">Add Book</button>
+    </div>
+    </form>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card shadow p-3">
+                    <form method="post" action="{{url}}">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            {{book.title}}
+                            <label for="{{book.title.id_for_label}}">{{book.title.label}}</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{book.author}}
+                            <label for="{{book.author.id_for_label}}">{{book.author.label}}</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{book.published}}
+                            <label for="{{book.published.id_for_label}}">{{book.published.label}}</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{book.price}}
+                            <label for="{{book.price.id_for_label}}">{{book.price.label}}</label>
+                        </div>
+                        <div class="position-relative container col-3 pt-3">
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow p-3">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Task</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Handler</th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
